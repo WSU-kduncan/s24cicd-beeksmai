@@ -16,3 +16,14 @@
 - To run the container I just created, all I had to do is run the command: `docker run -d -p 8080:80 --name mywebsite_container mywebsite`. -d runs the container in detached mode, -p 8080:80 maps port 8080 on my machine to port 80 in the container, and --name mywebsite_container names the container.
 ### How to view the project running in the container
 - After the container is run, to view it all you need to do is open any browser and type `http://localhost:8080`, and your webpage should load up.
+
+## Dockerhub
+### Creating a public repo
+- To create a public repo, first create an account. After that, go to the 'repositories' page and click the 'create repository' button. Fill out all information and then check the public button to make it public.
+### Authenticating Dockerhub through CLI
+- To authenticate Dockerhub through CLI, enter the command `docker login`. For me, because I have the Docker desktop app and I am logged in, it automatically logged me in. If you do not have the desktop app, you just need to input your username and password you created for Dockerhub.
+### Pushing a container to Dockerhub
+- To push a container to Dockerhub, enter the command `docker tag (your image's name) username/repo-name:tag` to tag the image.
+- Now all you need to do is enter the command `docker push username/repo-name:tag` and it'll push it to Dockerhub.
+### My Dockerhub Repo
+- [My Repo](https://hub.docker.com/r/beeksmai/project4/tags)
