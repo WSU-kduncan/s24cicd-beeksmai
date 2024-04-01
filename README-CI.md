@@ -27,3 +27,10 @@
 - Now all you need to do is enter the command `docker push username/repo-name:tag` and it'll push it to Dockerhub.
 ### My Dockerhub Repo
 - [My Repo](https://hub.docker.com/r/beeksmai/project4/tags)
+### GitHub Secrets
+- GitHub secrets hold data for GitHub workflows, without revealing the information in your repositories' code.
+- To set it up, navigate to the repository you want to set it up on.
+- Then, under the top portion where it has your repo name, navigate to the settings tab.
+- In the settings tab, find the 'Secrets and Variables' drop down and select Actions.
+- Next, click on 'New Repository Secret' and set up the variable from your workflow yml you would like to change.
+- You may need to create a new access token on the Dockerhub website if you want to set up signing into your account from a workflow.
