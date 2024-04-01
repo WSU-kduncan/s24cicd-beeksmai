@@ -34,3 +34,9 @@
 - In the settings tab, find the 'Secrets and Variables' drop down and select Actions.
 - Next, click on 'New Repository Secret' and set up the variable from your workflow yml you would like to change.
 - You may need to create a new access token on the Dockerhub website if you want to set up signing into your account from a workflow.
+### GitHub Workflows
+- GitHub workflows are .yml files in your repository that automate certain tasks. They usually operate in response to something.
+- My workflow, located at `.github/workflows/docker-workflow.yml`, operates whenever something is pushed to the master branch. When something is pushed, my Dockerhub account is accessed and a new docker image is pushed onto my 'project4' repository.
+- The variables that are custom in my workflow are -
+1. The name of my repository, `DOCKERHUB_REPO: project4` would need to be changed if someone else were to use my code.
+2. My username and login token are held in my GitHub Secrets, and replace the `${{secrets.DOCKER_USERNAME}}` and `${{secrets.DOCKER_TOKEN}}`
