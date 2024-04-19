@@ -8,9 +8,9 @@
 name: Docker-Login-Build-Push
 # event trigger(s)
 on:
-  # triggers on push to master branch
+  # triggers on push to main branch
   push:
-    branches: [master]
+    branches: [main]
     tags:
       - "v*.*.*"
   pull_request:
