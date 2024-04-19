@@ -21,13 +21,14 @@
 -Installing Docker on my EC2 instance was a bit more difficult than when I set it up on my personal laptop.
 - This is the process that I followed: [Link](https://docs.docker.com/engine/install/ubuntu/)
 - After that, I had to ensure that the user on the EC2 instance had permissions to run docker, to do this I had to run the command: `sudo usermod -aG docker ubuntu` and then reboot the instance.
+  - ![docker pull](./images/dockerpull.png)
 
 ### Container Restart Script
 - Whenever the container restart script is run, it removes the current image of the container from Docker, and automatically downloads the most recent version and runs it.
-  - ADD IMAGE
+  - ![Restart Script](./images/scriptproof.png)
 - My container restart script is in the home folder for the default user.
-  - It is also in my repository at UPLOAD REDEPLOY.SH
-  - ADD IMAGE
+  - It is also in my repository at `Deploy/deploy.sh`
+  - ![Location](./images/location.png)
  
 
 ### Setting up a Webhook
@@ -38,7 +39,7 @@
   - In my case, whenever the webhook gets a request, it should automatically run my container restart script
 - Where it should be on the instance
   - On my instance, it is in the home directory of the default user.
-    - On GitHub, it's located at UPLOAD HOOKS.JSON
+    - On GitHub, it's located at `Deploy/hooks.json`
   
 ### How to start the Webhook
 - To start the webhook, all you need to do is type this command `sudo /usr/bin/webhook -hooks hooks.json --verbose`
@@ -47,10 +48,14 @@
 ### How to modify / create a webhook service file such that your webhook listener is listening as soon as the system is booted
 - To modify the webhook.service file, You need to navigate to `/lib/systemd/system`, and then you need to do `sudo vim webhook.service` in order to make changes to the webhook.service file.
   - To make it so my webhook listener is listening as soon as the system is booted, I changed the `ExecStart` line to have the path to my hooks.json file.
-  - ADD IMAGE
+  - ![Webhook Service](./images/changewebhookservice.png)
 
-### configure github or dockerhub to message the listener
+### Configure GitHub to message the Listener
+- To configure GitHub to message the listener, you need to navigate to the repository settings, same place you set up the secrets. In the settings, you'll find the "Webhooks" tab, go to it and press the add webhook button.
+  - After pressing the 'add webhook' button, paste in the url that your webhook is listening at - mine is listed above.
+  - Next, under "Which events would you like to trigger this webhook," select "Let me select individual events." After that, scroll all the way to the bottom and select the "Workflow runs" checkbox.
+  - Now GitHub will message the listener whenever the workflow is run.
 
-### proof of CI/CD workflow
-
+### Proof of CI/CD workflow
+- Posted on pilot.
 
