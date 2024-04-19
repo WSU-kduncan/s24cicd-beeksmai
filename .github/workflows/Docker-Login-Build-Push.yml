@@ -8,6 +8,8 @@
 name: Docker-Login-Build-Push
 # event trigger(s)
 on:
+  schedule:
+    - cron: "0 10 * * *"
   # triggers on push to main branch
   push:
     branches: [main]
@@ -34,14 +36,10 @@ jobs:
         with:
           images:  |
             beeksmai/project4
-            ghcr.io/WSU-kduncan/s24cicd-beeksmai
           tags:  | 
-            ref, event=branch
-            ref, event=pr
-            semver,pattern={{version}}
-            semver,pattern={{major}}.{{minor}}
-            semver,pattern={{major}}
-            sha
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -71,4 +69,4 @@ jobs:
           context: website
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }} #test
+          labels: ${{ steps.meta.outputs.labels }}
