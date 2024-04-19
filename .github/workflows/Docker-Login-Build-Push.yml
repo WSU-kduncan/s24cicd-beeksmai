@@ -1,74 +1,44 @@
-####
-# Created from:
-# https://github.com/docker/build-push-action
-# https://docs.docker.com/ci-cd/github-actions/
-####
+name: ci
 
-# GitHub Actions workflow name
-name: Docker-Login-Build-Push
-# event trigger(s)
 on:
-  # triggers on push to master branch
   push:
-    branches: [master]
     tags:
       - "v*.*.*"
-  pull_request:
-    branches:
-      - "main"
-# variables used in this workflow
-env:
-  # variable holding my repo folder name (using DockerHub is assumed)
-  DOCKER_HUB_REPO: project4
-# jobs - each jobs runs on a runner - parralel by deafult, can be dependent based on id
-#     https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions#jobs
+
 jobs:
-  build_and_push:
-    name: Build docker image and push to Docker Hub
-    # OS of runner
+  login:
     runs-on: ubuntu-latest
     steps:
-      - name: Docker meta
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Docker meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images:  |
-            beeksmai/project4
-            ghcr.io/WSU-kduncan/s24cicd-beeksmai
-          tags:  | 
-            ref, event=branch
-            ref, event=pr
-            semver,pattern={{version}}
-            semver,pattern={{major}}.{{minor}}
-            semver,pattern={{major}}
-            sha
-      - name: Set up QEMU
+          images: ${{ secrets.DOCKER_USERNAME }}/project4
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+      -
+        name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
+      -
+        name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      # checkout repo contents to runner
-      - 
-        name: Checkout repo to runner
-        uses: actions/checkout@v4
-      - 
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v3 
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Login to GHCR
-        if: github.event_name != 'pull_request'
+      -
+        name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GH_TOKEN }}
-      - name: Build and Push
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      -
+        name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          context: website
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
