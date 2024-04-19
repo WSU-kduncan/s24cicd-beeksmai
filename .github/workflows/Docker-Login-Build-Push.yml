@@ -33,16 +33,15 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images:  |
-            beeksmai/app
-            ghcr.io/beeksmai/app
-          tags:  |
-            type=schedule
-            type=ref, event=branch
-            type=ref, event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
+            beeksmai/project4
+            ghcr.io/WSU-kduncan/s24cicd-beeksmai
+          tags:  | 
+            ref, event=branch
+            ref, event=pr
+            semver,pattern={{version}}
+            semver,pattern={{major}}.{{minor}}
+            semver,pattern={{major}}
+            sha
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
