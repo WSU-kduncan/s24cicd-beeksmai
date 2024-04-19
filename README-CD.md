@@ -23,19 +23,31 @@
 - After that, I had to ensure that the user on the EC2 instance had permissions to run docker, to do this I had to run the command: `sudo usermod -aG docker ubuntu` and then reboot the instance.
 
 ### Container Restart Script
-- what it does
-- where it should be on the instance
+- Whenever the container restart script is run, it removes the current image of the container from Docker, and automatically downloads the most recent version and runs it.
+  - ADD IMAGE
+- My container restart script is in the home folder for the default user.
+  - It is also in my repository at UPLOAD REDEPLOY.SH
+  - ADD IMAGE
+ 
 
 ### Setting up a Webhook
-- how to install webhook
+- To install [adnanh's webhook](https://github.com/adnanh/webhook), all you need to do is run `sudo apt-get install webhook`
 
 ### Webhook Task Definition File
-- What it does
+- The Webhook Task Definition File tells the webhook what it needs do to when it gets a request.
+  - In my case, whenever the webhook gets a request, it should automatically run my container restart script
 - Where it should be on the instance
-
+  - On my instance, it is in the home directory of the default user.
+    - On GitHub, it's located at UPLOAD HOOKS.JSON
+  
 ### How to start the Webhook
+- To start the webhook, all you need to do is type this command `sudo /usr/bin/webhook -hooks hooks.json --verbose`
+- After starting, the webhook began listening at this url: `http://44.195.160.165:9000/hooks/redeploy-webhook`
 
 ### How to modify / create a webhook service file such that your webhook listener is listening as soon as the system is booted
+- To modify the webhook.service file, You need to navigate to `/lib/systemd/system`, and then you need to do `sudo vim webhook.service` in order to make changes to the webhook.service file.
+  - To make it so my webhook listener is listening as soon as the system is booted, I changed the `ExecStart` line to have the path to my hooks.json file.
+  - ADD IMAGE
 
 ### configure github or dockerhub to message the listener
 
